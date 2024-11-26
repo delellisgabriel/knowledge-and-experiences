@@ -15,21 +15,31 @@ import { createPortal } from 'react-dom';
 
 <p>This child is placed in the parent div.</p>
 
-{createPortal(
+	{createPortal(
 
-<p>This child is placed in the document body.</p>,
+		<p>This child is placed in the document body.</p>,
+    document.body
 
-document.body
-
-)}
-
+	)}
 </div>
+
 ```
 
 ## Real use case example 😎
 
-At my last job we had implemented a blog navigation bar. It's positioned in two ways depending on the device's screen size; if it's a mid sized and up device the navigation bar would be positioned fixed to the left of the blog post and would follow the user's scrolling. On mobile devices this navigation bar had to be on top of the blogpost under the main navigation bar of the website.
+At my last job, we implemented a blog index bar with responsive positioning based on screen size:
 
-This navigation bar is fixed to the top of the website and has a promotion banner above the navigation that hides and shows depending on whether the user is scrolling up☝️ or down 👇
+- On medium-sized screens and larger, the blog index bar was fixed to the left of the blog post and followed the user's scrolling.
+- On mobile devices, the blog index bar was positioned just below the website's main navigation bar.
+
+The main navigation bar was fixed to the top of the page and included a promotional banner above it. This banner would appear or hide depending on whether the user was scrolling up or down.
+
+With the first implementation of this blog index bar we would get the total height of the navbar + the current banner height which meant we had to listen to events make the calculation and the blog index bar would kind of move with it but it was buggy and we were not happy with it.
+
+## The solution
+
+As you might have guessed already I refactored the code to use the createPortal function, removed all listeners and created two blog index bar, one for mobile and one for desktop and with createPortal I would attach it to the header thus having no need to make any expensive calculations, also this is the equivalent of using document.getElementById get the header and then append the component as a child with .appendChild method.
+
+The advantage of using the createPortal function is that React will move the component in the DOM to the header but in it's virtual DOM it will remain as a child of the component.
 
 <!-- TODO continue! -->
